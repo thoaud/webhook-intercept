@@ -58,7 +58,7 @@ describe("webhook capture worker", () => {
 	it("does not capture reserved inspector paths", async () => {
 		const login = await SELF.fetch("https://example.com/login");
 		expect(login.status).toBe(200);
-		expect(await login.text()).toContain("INTERCEPT");
+		expect(await login.text()).toContain("Show us your token");
 
 		const favicon = await SELF.fetch("https://example.com/favicon.ico");
 		expect(favicon.status).toBe(204);
