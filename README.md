@@ -12,7 +12,7 @@ cp .dev.vars.example .dev.vars
 
 npm install
 npx wrangler types
-npx wrangler d1 migrations apply webhook-capture --local
+npx wrangler d1 migrations apply webhook-intercept --local
 npx wrangler dev
 ```
 
@@ -26,8 +26,6 @@ curl -X POST http://localhost:8787/stripe/webhook \
 
 The inspector polls every 2 seconds. `GET /login` and `/api/*` are reserved; every other method and path is captured.
 
-`wrangler.jsonc` ships with a placeholder D1 `database_id`. That is enough for local Miniflare. Replace it before a remote deploy.
-
 ## Tests
 
 ```bash
@@ -37,22 +35,14 @@ npm test
 ## Deploy
 
 1. `npx wrangler login`
-2. Create remote storage (once):
+2. Apply migrations and set the inspect secret:
 
    ```bash
-   npx wrangler d1 create webhook-capture
-   npx wrangler r2 bucket create webhook-capture-bodies
-   ```
-
-3. Put the D1 UUID from step 2 into `wrangler.jsonc` (`d1_databases[0].database_id`).
-4. Apply migrations and set the inspect secret:
-
-   ```bash
-   npx wrangler d1 migrations apply webhook-capture --remote
+   npx wrangler d1 migrations apply webhook-intercept --remote
    npx wrangler secret put INSPECT_TOKEN
    ```
 
-5. `npx wrangler deploy`
+3. `npx wrangler deploy`
 
 A daily cron at 03:00 UTC deletes captures older than 30 days (D1 rows and R2 objects).
 

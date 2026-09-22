@@ -10,7 +10,7 @@
 		"check": "tsc --noEmit",
 		"test": "vitest run",
 		"test:watch": "vitest",
-		"migrate:local": "wrangler d1 migrations apply webhook-capture --local"
+		"migrate:local": "wrangler d1 migrations apply webhook-intercept --local"
 	},
 	"dependencies": {
 		"hono": "^4.9.8"

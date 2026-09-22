@@ -1,6 +1,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "webhook-capture",
+	"name": "webhook-intercept",
+	"account_id": "020b98da900a40e5430002971996388b",
 	"main": "src/index.ts",
 	// Keep current: new Workers should use today's date.
 	"compatibility_date": "2026-09-22",
@@ -19,18 +20,14 @@
 	"vars": {
 		"BODY_MAX_BYTES": "10485760"
 	},
-	// Placeholder database_id is enough for `wrangler dev` and local migrations.
-	// Replace with the UUID from `wrangler d1 create webhook-capture` before a remote deploy.
 	"d1_databases": [
 		{
 			"binding": "DB",
-			"database_name": "webhook-capture",
-			"database_id": "00000000-0000-4000-8000-000000000001",
+			"database_name": "webhook-intercept",
+			"database_id": "8d29c1fe-f866-41cd-b56c-b236a83f1bfa",
 			"migrations_dir": "migrations"
 		}
 	],
-	// Local `wrangler dev` simulates this bucket automatically.
-	// Create the remote bucket with `wrangler r2 bucket create webhook-capture-bodies` before deploy.
 	"r2_buckets": [
 		{
 			"binding": "BUCKET",
