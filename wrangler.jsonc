@@ -1,0 +1,43 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "webhook-capture",
+	"main": "src/index.ts",
+	// Keep current: new Workers should use today's date.
+	"compatibility_date": "2026-09-22",
+	"compatibility_flags": ["nodejs_compat"],
+	"observability": {
+		"enabled": true,
+		"logs": {
+			"head_sampling_rate": 1
+		},
+		"traces": {
+			"enabled": true,
+			"head_sampling_rate": 1
+		}
+	},
+	// Non-secret config. INSPECT_TOKEN is a secret (`.dev.vars` locally, `wrangler secret put` in prod).
+	"vars": {
+		"BODY_MAX_BYTES": "10485760"
+	},
+	// Placeholder database_id is enough for `wrangler dev` and local migrations.
+	// Replace with the UUID from `wrangler d1 create webhook-capture` before a remote deploy.
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "webhook-capture",
+			"database_id": "00000000-0000-4000-8000-000000000001",
+			"migrations_dir": "migrations"
+		}
+	],
+	// Local `wrangler dev` simulates this bucket automatically.
+	// Create the remote bucket with `wrangler r2 bucket create webhook-capture-bodies` before deploy.
+	"r2_buckets": [
+		{
+			"binding": "BUCKET",
+			"bucket_name": "webhook-capture-bodies"
+		}
+	],
+	"triggers": {
+		"crons": ["0 3 * * *"]
+	}
+}
